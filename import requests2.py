@@ -4,7 +4,7 @@ import os
 import deepl
 
 # Remplacez 'your-api-key' par votre clé API DeepL
-auth_key = "8cd95243-eac5-4e4f-bf24-4784da7f4d19:fx"
+auth_key = "04226dcb-d1b2-4e84-b1eb-dc8185488841"
 translator = deepl.Translator(auth_key)
 
 
@@ -33,7 +33,7 @@ def translate_text(text, dest_language="fr"):
     return result.text
 
 # URL de l'article
-url = "https://realpython.com/defining-your-own-python-function/"
+url = "https://realpython.com/absolute-vs-relative-python-imports/"
 
 # Récupérer le contenu de la page
 response = requests.get(url)
@@ -55,7 +55,8 @@ def html_to_latex(sections):
     for section in sections:
         for element in section.find_all(['p', 'h1', 'h2', 'ul', 'ol', 'div']):
             if element.name == 'p':
-                latex_content.append(translate_text(element.get_text()))
+                if element.parent.name != 'li':
+                    latex_content.append(translate_text(element.get_text()))
             elif element.name == 'h1':
                 latex_content.append(f"\\chapter{{{translate_text(element.get_text())}}}")
             elif element.name == 'h2':

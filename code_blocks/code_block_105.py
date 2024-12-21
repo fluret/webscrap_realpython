@@ -1,3 +1,0 @@
->>> def f(a: '<a>', b: '<b>') -> '<ret_value>':
-...     pass
-...
