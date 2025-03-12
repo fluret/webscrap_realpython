@@ -57,13 +57,13 @@ def html_to_latex(sections):
     code_block_counter = 1
 
     for section in sections:
-        for element in section.find_all(['p', 'h1', 'h2', 'ul', 'ol', 'div']):
+        for element in section.find_all(['p', 'h2', 'h3', 'ul', 'ol', 'div']):
             if element.name == 'p':
                 if element.parent.name != 'li':
                     latex_content.append(translate_text(element.get_text()))
-            elif element.name == 'h1':
-                latex_content.append(f"\\chapter{{{translate_text(element.get_text())}}}")
             elif element.name == 'h2':
+                latex_content.append(f"\\chapter{{{translate_text(element.get_text())}}}")
+            elif element.name == 'h3':
                 latex_content.append(f"\\section{{{translate_text(element.get_text())}}}")
             elif element.name == 'ul':
                 latex_content.append("\\begin{itemize}")
@@ -76,7 +76,7 @@ def html_to_latex(sections):
                     latex_content.append(f"\\item {translate_text(li.get_text())}")
                 latex_content.append("\\end{enumerate}")
             elif element.name == 'div' and 'class' in element.attrs and 'codeblock' in element['class']:
-                code = element.find('code').get_text()
+                code = element.find_all('code').get_text()
                 code_filename = f"code_blocks/code_block_{code_block_counter}.py"
                 with open(code_filename, 'w', encoding="utf-8") as code_file:
                     code_file.write(code)

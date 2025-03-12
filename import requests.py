@@ -7,7 +7,6 @@ url = "https://realpython.com/primer-on-python-decorators/"
 
 # Récupérer le contenu de la page
 response = requests.get(url)
-response.encoding = 'utf-8'  # Spécifier l'encodage
 soup = BeautifulSoup(response.content, 'html.parser')
 
 # Créer un dossier pour les fichiers .py
