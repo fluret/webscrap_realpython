@@ -3,10 +3,11 @@ from bs4 import BeautifulSoup
 import os
 
 # URL de l'article
-url = "https://realpython.com/defining-your-own-python-function/"
+url = "https://realpython.com/primer-on-python-decorators/"
 
 # Récupérer le contenu de la page
 response = requests.get(url)
+response.encoding = 'utf-8'  # Spécifier l'encodage
 soup = BeautifulSoup(response.content, 'html.parser')
 
 # Créer un dossier pour les fichiers .py
@@ -37,7 +38,7 @@ def html_to_latex(soup):
         elif element.name == 'div' and 'class' in element.attrs and 'codeblock' in element['class']:
             code = element.find('code').get_text()
             code_filename = f"code_blocks/code_block_{code_block_counter}.py"
-            with open(code_filename, 'w') as code_file:
+            with open(code_filename, 'w', encoding='utf-8') as code_file:
                 code_file.write(code)
             code_block_counter += 1
 
@@ -47,7 +48,7 @@ def html_to_latex(soup):
 latex_content = html_to_latex(soup)
 
 # Sauvegarder le contenu LaTeX dans un fichier
-with open('article.tex', 'w') as latex_file:
+with open('article.tex', 'w', encoding='utf-8') as latex_file:
     latex_file.write(latex_content)
 
 print("Conversion terminée. Les fichiers LaTeX et .py ont été générés.")

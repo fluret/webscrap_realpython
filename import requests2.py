@@ -2,9 +2,10 @@ import requests
 from bs4 import BeautifulSoup
 import os
 import deepl
+import config
 
 # Remplacez 'your-api-key' par votre clé API DeepL
-auth_key = "04226dcb-d1b2-4e84-b1eb-dc8185488841"
+auth_key = config.API_key_deepl
 translator = deepl.Translator(auth_key)
 
 
@@ -24,7 +25,10 @@ def escape_latex(text):
     }
     # Échapper les caractères spéciaux
     for char, escaped_char in special_chars.items():
-        text = text.replace(char, escaped_char)
+        try:
+            text = text.replace(char, escaped_char)
+        except:
+            print(f'Error with char: {char}')
     return text
 
 
@@ -33,7 +37,7 @@ def translate_text(text, dest_language="fr"):
     return result.text
 
 # URL de l'article
-url = "https://realpython.com/absolute-vs-relative-python-imports/"
+url = "https://realpython.com/python-type-self/"
 
 # Récupérer le contenu de la page
 response = requests.get(url)
@@ -74,7 +78,7 @@ def html_to_latex(sections):
             elif element.name == 'div' and 'class' in element.attrs and 'codeblock' in element['class']:
                 code = element.find('code').get_text()
                 code_filename = f"code_blocks/code_block_{code_block_counter}.py"
-                with open(code_filename, 'w') as code_file:
+                with open(code_filename, 'w', encoding="utf-8") as code_file:
                     code_file.write(code)
                 code_block_counter += 1
 
